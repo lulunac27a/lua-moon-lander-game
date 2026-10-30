@@ -1,36 +1,38 @@
-function love.load()
-    player = { x = 400, y = 50, vy = 0, size = 20 }
-    gravity = 400
-    jumpForce = -250
-    groundHeight = 550
-    score = 0
-    gameOver = false
+function love.load()--load assets and initialize variables
+    love.window.setTitle("Lunar Lander Game")--set window title
+    love.window.setMode(800, 600)--set window size
+    player = { x = 400, y = 50, vy = 0, size = 20 }--initialize player properties
+    gravity = 400--set gravity value
+    jumpForce = -250--set jump force value
+    groundHeight = 550--set ground height
+    score = 0--initialize score
+    gameOver = false--initialize game over state
 end
 
-function love.update(dt)
-    if gameOver then return end
+function love.update(dt)--update game state
+    if gameOver then return end--stop updating if game is over
 
-    player.vy = player.vy + gravity * dt
+    player.vy = player.vy + gravity * dt--set player position and velocity
     player.y = player.y + player.vy * dt
 
     -- Bounce or land on the ground
-    if player.y + player.size > groundHeight then
-        player.y = groundHeight - player.size
-        player.vy = 0
-        gameOver = true
+    if player.y + player.size > groundHeight then--check if player y axis reaches height
+        player.y = groundHeight - player.size--decrease player y axis
+        player.vy = 0--reset player velocity
+        gameOver = true--set game over state to true
     end
 end
 
-function love.keypressed(key)
-    if key == "space" and not gameOver then
-        player.vy = jumpForce
-        score = score + 1
-    elseif key == "r" and gameOver then
-        love.load()
+function love.keypressed(key)--when key is pressed
+    if key == "space" and not gameOver then--when space key is pressed
+        player.vy = jumpForce--increase player y axis
+        score = score + 1--increase score
+    elseif key == "r" and gameOver then--when r key is pressed
+        love.load()--load game
     end
 end
 
-function love.draw()
+function love.draw()--draw canvas
     -- Draw moon-like gray background
     love.graphics.clear(0.1, 0.1, 0.15)
 
@@ -44,9 +46,9 @@ function love.draw()
 
     -- Instructions & Score
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print("Press SPACE to thrust up! | Score: " .. score, 20, 20)
+    love.graphics.print("Press SPACE to thrust up! | Score: " .. score, 20, 20)--print score display
 
     if gameOver then
-        love.graphics.print("CRASHED! Press 'R' to restart.", 350, 300)
+        love.graphics.print("CRASHED! Press 'R' to restart.", 350, 300)--display text if game over
     end
 end
